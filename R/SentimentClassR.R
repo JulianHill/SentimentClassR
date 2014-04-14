@@ -33,9 +33,11 @@ article_text = doc.text
 
  text_clean = article_text
 
+ text_short = substr(article_text, 0, 359)
+
 text_num = 1
 
-text_df = data.frame(text = article_text, sentiment=1:text_num, subject=1:text_num, topic=1:text_num, stringsAsFactors=FALSE)
+text_df = data.frame(text = text_short, sentiment=1:text_num, subject=1:text_num, topic=1:text_num, stringsAsFactors=FALSE)
 
 
 # apply function getSentiment
