@@ -73,7 +73,7 @@ var key = $("#key").val();
         $("#loading").show()
         var req = ocpu.call("NewsClass", {
         api_key: key,
-        article_text : text
+        url : text
      }, function(session){
        $("#loading").hide()
        $("#output").attr('src', session.getLoc() + "files/output.html");  
