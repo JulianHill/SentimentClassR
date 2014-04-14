@@ -42,7 +42,7 @@ article_text = doc.text
 
 text_num = 1
 
-text_df = data.frame(text = text_short, sentiment=1:text_num, subject=1:text_num, topic=1:text_num,date=1:text_num, stringsAsFactors=FALSE)
+text_df = data.frame(text = text_short, sentiment=1:text_num, subject=1:text_num, topic=1:text_num,date=1:text_num,length=1:text_num, stringsAsFactors=FALSE)
 
 
 # apply function getSentiment
@@ -59,6 +59,7 @@ tmp = getSentiment(text_clean[i], api_key)
  text_df$topic[i] = tmp$topic
 
  text_df$date[i] = toString(getDate(url,token))
+ text_df$length[i] = sapply(gregexpr("\\W+", text_clean), length) + 1
 
 }
 
@@ -75,7 +76,8 @@ tab2$params$table$aoColumns =
     list(sType = "string_ignore_null", sTitle = "sentiment"),
     list(sType = "string_ignore_null", sTitle = "subject"),
     list(sType = "string_ignore_null", sTitle = "topic"),
-    list(sType = "string_ignore_null", sTitle = "date")
+    list(sType = "string_ignore_null", sTitle = "date"),
+    list(sType = "string_ignore_null", sTitle = "length")
   )
 
 tab2$save("output.html", cdn = TRUE)
