@@ -8,9 +8,9 @@ NewsClass <- function(api_key, article_text) {
 
  text_clean = clean.text(article_text)
 
-text_num = 1
+text_num = 0
 
-text_df = data.frame(text = article_text, sentiment=1:text_num, subject=1:text_num, topic=1:text_num, stringsAsFactors=FALSE)
+text_df = data.frame(text = article_text, sentiment=0:text_num, subject=0:text_num, topic=0:text_num, stringsAsFactors=FALSE)
 
 
 # apply function getSentiment
@@ -27,7 +27,26 @@ tmp = getSentiment(text_clean[i], api_key)
 }
 
 
-text_df
+#text_df
+
+library(rCharts)
+tab2=dTable(text_df[], sPaginationType = "full_numbers")
+tab2$templates$script =  "http://timelyportfolio.github.io/rCharts_dataTable/chart_customsort.html" 
+
+tab2$params$table$aoColumns =
+  list(
+    list(sType = "string_ignore_null", sTitle = "text"),
+    list(sType = "string_ignore_null", sTitle = "sentiment"),
+    list(sType = "string_ignore_null", sTitle = "subject"),
+    list(sType = "string_ignore_null", sTitle = "topic")
+  )
+
+tab2$save("output.html", cdn = TRUE)
+
+
+
+
+
 
 
 
