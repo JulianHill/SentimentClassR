@@ -1,12 +1,37 @@
-NewsClass <- function(api_key, article_text) {
+NewsClass <- function(api_key, url) {
 
 	library(RCurl)
  library(RJSONIO)
  library(stringr)
+library(XML)
 
 
 
- text_clean = clean.text(article_text)
+# Read and parse HTML file
+doc.html = htmlTreeParse(url,
+           useInternal = TRUE)
+ 
+# Extract all the paragraphs (HTML tag is p, starting at
+# the root of the document). Unlist flattens the list to
+# create a character vector.
+doc.text = unlist(xpathApply(doc.html, '//p', xmlValue))
+ 
+# Replace all \n by spaces
+doc.text = gsub('\\n', ' ', doc.text)
+ 
+# Join all the elements of the character vector into a single
+# character string, separated by spaces
+doc.text = paste(doc.text, collapse = ' ')
+
+ 
+# get mood probability
+article_text = doc.text
+
+
+
+
+
+ text_clean = article_text
 
 text_num = 1
 
