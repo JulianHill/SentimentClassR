@@ -8,9 +8,9 @@ NewsClass <- function(api_key, article_text) {
 
  text_clean = clean.text(article_text)
 
-text_num = 0
+text_num = 1
 
-text_df = data.frame(text = article_text, sentiment=0:text_num, subject=0:text_num, topic=0:text_num, stringsAsFactors=FALSE)
+text_df = data.frame(text = article_text, sentiment=1:text_num, subject=1:text_num, topic=1:text_num, stringsAsFactors=FALSE)
 
 
 # apply function getSentiment
@@ -23,7 +23,7 @@ tmp = getSentiment(text_clean[i], api_key)
  
  text_df$subject[i] = tmp$subject
  text_df$topic[i] = tmp$topic
- #text_df$gender[i] = tmp$gender
+
 }
 
 
@@ -100,8 +100,7 @@ topic = js$output$result
  
 
  
-# get mood probability
-gender = js$output$result
+
  
 return(list(sentiment=sentiment,subject=subject,topic=topic))
 }
