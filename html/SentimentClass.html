@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>News Classification. - by JulianHi</title>
+  
+  <script type="text/javascript" src="./files/dummy.js"></script>
+  
+  
+  
+  <link rel="stylesheet" type="text/css" href="./files/result-light.css">
+  
+      <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+      <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+      <script type="text/javascript" src="http://public.opencpu.org/js/archive/opencpu-0.4.js"></script><style type="text/css"></style>
+    <script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.min.js"></script>
+  <script type='text/javascript' src="http://slidify.github.io/ile/libraries/widgets/interactive/js/ace/js/ace.js"></script>
+  <script type='text/javascript' src="http://angular-ui.github.io/ui-ace/dist/ui-ace.min.js"></script>
+      <script type='text/javascript' src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+  
+  
+  <style type="text/css">
+   @import url(http://fonts.googleapis.com/css?family=Lora|Lato);
+h2 {
+   font-family: Lato;   
+}
+p {
+  font-family: "Lora";
+  text-align: justify;
+  line-height: 22px;
+}
+.ace_editor  {
+  height : 200px;
+}
+#output {
+  width: 200%;
+  height: 1000px;
+}
+
+#text {
+    font-weight: bold;
+    font-size: 18px; /* or larger */
+    height: 2em; /* or larger */
+    width: 400px; /* or larger */
+}
+  </style>
+  
+
+
+<script type="text/javascript">//<![CDATA[ 
+window.onload=function(){
+//set CORS to call "appdemo" package on public server
+ocpu.seturl("http://public.opencpu.org/ocpu/github/JulianHill/SentimentClassR/R")
+
+//global var
+var mysession;
+
+//calls R function: stats::rnorm(n=100, mean=runif(1)):
+$("#postbutton").click(function(){
+    
+ ocpu.seturl("http://public.opencpu.org/ocpu/github/JulianHill/SentimentClassR/R")
+
+var key = $("#key").val();  
+    var text = $("#text").val();
+
+
+ ocpu.seturl("http://public.opencpu.org/ocpu/github/JulianHill/SentimentClassR/R")
+
+var key = $("#key").val();  
+    var text = $("#text").val();
+
+   $("#output").attr('src', '')
+        $("#loading").show()
+        var req = ocpu.call("NewsClass", {
+        api_key: key,
+        article_text : text
+     }, function(session){
+       $("#loading").hide()
+       $("#output").attr('src', session.getLoc() + "files/output.html");  
+       $("#download").show()
+       $scope.$apply(function(){
+         $scope.dnlink = session.getLoc() + "files/output.html"
+       })
+     }).fail(function(text){
+      alert("Error: " + req.responseText);
+     });
+
+
+});
+
+$("#getbutton").click(function(){
+    //retrieve object (async)
+    mysession.getObject(function(data){
+        //data is the object returned by the R function
+        alert("Array of length " + data.length + ".\nFirst few values:" + data.slice(0,3)); 
+    });
+});
+
+       
+
+}//]]>  
+
+</script>
+
+
+</head>
+<body ng-app="myApp">
+ <div class='container' ng-controller='MainCtrl'>
+ 
+ <div class='col-lg-12'>
+ <p>
+      <span class='label label-default'>News Classification Test</span>
+     >
+    </p>
+
+
+  
+
+  <input type="text" id="key" value="API KEY"><br>
+    <input type="text" id="text" value="TEXT"><br><br><br>
+
+    <button id="postbutton" type="button">Get Classification!</button> <br><br>
+  
+
+
+
+
+
+  <div class='col-lg-8'>
+   
+  
+
+     
+  
+      
+      <div id="plotdiv"></div>   
+      
+         <div id='loading' style='display:none;'>
+      <img src="http://i.imgur.com/dLNEcOB.gif"></img>   
+    </div>
+       <iframe id='output' seamless scrolling = "no" frameborder = "0"
+         allowTransparency = "true"></iframe>
+  </div>
+         
+        <div class='col-lg-8'>
+      <div id='loading' style='display:none;'>
+      <img src="http://i.imgur.com/dLNEcOB.gif"></img>   
+    </div>
+       <iframe id='output' seamless scrolling = "no" frameborder = "0"
+         allowTransparency = "true"></iframe>
+  </div>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+</body></html>
