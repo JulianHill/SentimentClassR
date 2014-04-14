@@ -66,14 +66,17 @@ var key = $("#key").val();
 
  ocpu.seturl("http://public.opencpu.org/ocpu/github/JulianHill/SentimentClassR/R")
 
-var key = $("#key").val();  
+var key = $("#key").val();
+var diff = $("#token").val();  
     var text = $("#text").val();
 
    $("#output").attr('src', '')
         $("#loading").show()
         var req = ocpu.call("NewsClass", {
         api_key: key,
+        token: diff,
         url : text
+        
      }, function(session){
        $("#loading").hide()
        $("#output").attr('src', session.getLoc() + "files/output.html");  
@@ -117,6 +120,7 @@ $("#getbutton").click(function(){
   
 
   <input type="text" id="key" value="API KEY"><br>
+  <input type="text" id="token" value="TOKEN"><br>
     <input type="text" id="text" value="TEXT"><br><br><br>
 
     <button id="postbutton" type="button">Get Classification!</button> <br><br>

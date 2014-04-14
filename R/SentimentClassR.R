@@ -1,9 +1,14 @@
-NewsClass <- function(api_key, url) {
+NewsClass <- function(api_key,token, url) {
 
 	library(RCurl)
  library(RJSONIO)
  library(stringr)
 library(XML)
+
+
+
+
+
 
 
 
@@ -37,7 +42,7 @@ article_text = doc.text
 
 text_num = 1
 
-text_df = data.frame(text = text_short, sentiment=1:text_num, subject=1:text_num, topic=1:text_num, stringsAsFactors=FALSE)
+text_df = data.frame(text = text_short, sentiment=1:text_num, subject=1:text_num, topic=1:text_num,date=1:text_num, stringsAsFactors=FALSE)
 
 
 # apply function getSentiment
@@ -45,11 +50,15 @@ sentiment = rep(0, text_num)
 for (i in 1:text_num)
 {
 tmp = getSentiment(text_clean[i], api_key)
+
+
  
  text_df$sentiment[i] = tmp$sentiment
  
  text_df$subject[i] = tmp$subject
  text_df$topic[i] = tmp$topic
+
+ text_df$date[i] = toString(getDate(url,token))
 
 }
 
@@ -65,7 +74,8 @@ tab2$params$table$aoColumns =
     list(sType = "string_ignore_null", sTitle = "text"),
     list(sType = "string_ignore_null", sTitle = "sentiment"),
     list(sType = "string_ignore_null", sTitle = "subject"),
-    list(sType = "string_ignore_null", sTitle = "topic")
+    list(sType = "string_ignore_null", sTitle = "topic"),
+    list(sType = "string_ignore_null", sTitle = "date")
   )
 
 tab2$save("output.html", cdn = TRUE)
@@ -79,7 +89,26 @@ tab2$save("output.html", cdn = TRUE)
 
 }
 
+getDate <- function(url,token)
+{
 
+	
+	data <- getURL(paste("http://api.diffbot.com/v2/analyze?token=", token, "&url=",url,"&date" ,sep=""))
+ 
+js <- fromJSON(data, asText=TRUE);
+ 
+# get mood probability
+date = toString(js$date)
+
+if(length(date)==1)
+{
+	return("NA")
+}
+else{
+return(date)
+
+}
+}
 
 
 
