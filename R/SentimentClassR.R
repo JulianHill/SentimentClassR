@@ -27,6 +27,10 @@ tmp = getSentiment(text_clean[i], api_key)
 }
 
 
+text_df
+
+
+
 }
 
 
