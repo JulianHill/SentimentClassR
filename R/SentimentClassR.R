@@ -8,10 +8,6 @@ library(XML)
 
 
 
-
-
-
-
 # Read and parse HTML file
 doc.html = htmlTreeParse(url,
            useInternal = TRUE)
