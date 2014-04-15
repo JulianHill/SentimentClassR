@@ -79,10 +79,7 @@ if(!myfile){
     var req = ocpu.call("read.csv", {
         "file" : myfile,
         "header" : myheader
-    }, function(session){
-        session.getConsole(function(outtxt){
-            $("#output").text(outtxt); 
-        });
+    });
 
     
  
