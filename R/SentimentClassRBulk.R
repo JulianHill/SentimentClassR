@@ -1,3 +1,60 @@
+Main <- function(file, api_key,token_diff,token_shares)
+{
+
+URLS <- read.csv(header = TRUE, file = file)
+  number <- nrow(URLS)
+
+df = data.frame(text = 1:number, sentiment=1:number, subject=1:number, topic=1:number,date=1:number,length=1:number,shares=1:number, stringsAsFactors=FALSE)
+
+
+
+for (i in 1:number)
+{
+
+url <- toString(URLS[i,1])
+
+tmp <- NewsClass(api_key,token_diff,token_shares,url)
+
+
+ df$sentiment[i] = tmp$sentiment
+ df$subject[i] = tmp$subject
+ df$topic[i] = tmp$topic
+
+ df$date[i] = tmp$date
+ df$length[i] = tmp$length
+ df$shares[i] = tmp$shares
+
+}
+
+
+
+
+
+
+
+  #Put the df frame (text_df) in the rCharts table
+
+library(rCharts)
+tab2=dTable(df[], sPaginationType = "full_numbers")
+tab2$templates$script =  "http://timelyportfolio.github.io/rCharts_dataTable/chart_customsort.html" 
+
+tab2$params$table$aoColumns =
+  list(
+    list(sType = "string_ignore_null", sTitle = "text"),
+    list(sType = "string_ignore_null", sTitle = "sentiment"),
+    list(sType = "string_ignore_null", sTitle = "subject"),
+    list(sType = "string_ignore_null", sTitle = "topic"),
+    list(sType = "string_ignore_null", sTitle = "date"),
+    list(sType = "string_ignore_null", sTitle = "length"),
+    list(sType = "string_ignore_null", sTitle = "shares")
+  )
+
+tab2$save("output.html", cdn = TRUE)
+
+  
+}
+
+
 
 
 NewsClass <- function(api_key,token_diff,token_shares,url) {
@@ -59,25 +116,8 @@ tmp = getSentiment(text_clean[i], api_key)
 
 }
 
+return(text_df)
 
-#Put the df frame (text_df) in the rCharts table
-
-library(rCharts)
-tab2=dTable(text_df[], sPaginationType = "full_numbers")
-tab2$templates$script =  "http://timelyportfolio.github.io/rCharts_dataTable/chart_customsort.html" 
-
-tab2$params$table$aoColumns =
-  list(
-    list(sType = "string_ignore_null", sTitle = "text"),
-    list(sType = "string_ignore_null", sTitle = "sentiment"),
-    list(sType = "string_ignore_null", sTitle = "subject"),
-    list(sType = "string_ignore_null", sTitle = "topic"),
-    list(sType = "string_ignore_null", sTitle = "date"),
-    list(sType = "string_ignore_null", sTitle = "length"),
-    list(sType = "string_ignore_null", sTitle = "shares")
-  )
-
-tab2$save("output.html", cdn = TRUE)
 
 
 }
