@@ -1,8 +1,8 @@
-NewsClass <- function(api_key,token, url) {
+NewsClass <- function(api_key,token_diff,token_shares url) {
 
-	library(RCurl)
- library(RJSONIO)
- library(stringr)
+library(RCurl)
+library(RJSONIO)
+library(stringr)
 library(XML)
 
 
@@ -38,7 +38,7 @@ article_text = doc.text
 
 text_num = 1
 
-text_df = data.frame(text = text_short, sentiment=1:text_num, subject=1:text_num, topic=1:text_num,date=1:text_num,length=1:text_num, stringsAsFactors=FALSE)
+text_df = data.frame(text = text_short, sentiment=1:text_num, subject=1:text_num, topic=1:text_num,date=1:text_num,length=1:text_num,shares=1:text_num, stringsAsFactors=FALSE)
 
 
 # apply function getSentiment
@@ -56,6 +56,7 @@ tmp = getSentiment(text_clean[i], api_key)
 
  text_df$date[i] = toString(getDate(url,token))
  text_df$length[i] = sapply(gregexpr("\\W+", text_clean), length) + 1
+ text_df$shares[i] = getShares(url,token_shares)
 
 }
 
@@ -73,7 +74,8 @@ tab2$params$table$aoColumns =
     list(sType = "string_ignore_null", sTitle = "subject"),
     list(sType = "string_ignore_null", sTitle = "topic"),
     list(sType = "string_ignore_null", sTitle = "date"),
-    list(sType = "string_ignore_null", sTitle = "length")
+    list(sType = "string_ignore_null", sTitle = "length"),
+    list(sType = "string_ignore_null", sTitle = "shares")
   )
 
 tab2$save("output.html", cdn = TRUE)
@@ -86,6 +88,23 @@ tab2$save("output.html", cdn = TRUE)
 
 
 }
+
+
+getShares <- function(url, token_shares)
+{
+
+  data <- getURL(paste("http://api.sharedcount.com/?apikey=", token_shares, "&url=",url ,sep=""))
+ 
+js <- fromJSON(data, asText=TRUE);
+
+shares <- js$Facebook[[3]] + js$Twitter[[1]]
+ 
+# get mood probability
+date = toString(shares)
+
+
+}
+
 
 getDate <- function(url,token)
 {
