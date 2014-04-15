@@ -15,7 +15,7 @@ url <- toString(URLS[i,1])
 
 tmp <- NewsClass(api_key,token_diff,token_shares,url)
 
-df$text[i] = tmp$text
+ df$text[i] = tmp$text
  df$sentiment[i] = tmp$sentiment
  df$subject[i] = tmp$subject
  df$topic[i] = tmp$topic
@@ -65,25 +65,18 @@ library(stringr)
 library(XML)
 
 
-# Read and parse HTML file
-doc.html = htmlTreeParse(url,
-           useInternal = TRUE)
+# download html
+html <- getURL(toString(url), followlocation = TRUE)
  
-# Extract all the paragraphs (HTML tag is p, starting at
-# the root of the document). Unlist flattens the list to
-# create a character vector.
-doc.text = unlist(xpathApply(doc.html, '//p', xmlValue))
- 
-# Replace all \n by spaces
-doc.text = gsub('\\n', ' ', doc.text)
- 
-# Join all the elements of the character vector into a single
-# character string, separated by spaces
-doc.text = paste(doc.text, collapse = ' ')
+# parse html
+doc = htmlParse(html, asText=TRUE)
+plain.text <- xpathSApply(doc, "//p", xmlValue)
+txt <- paste(plain.text, collapse = "\n")
+
 
  
 # get mood probability
-article_text = doc.text
+article_text = txt
 
 
 
@@ -148,14 +141,15 @@ getDate <- function(url,token)
 js <- fromJSON(data, asText=TRUE);
  
 # get mood probability
-date = js$date
 
-if(length(date)<2)
-{
-	return("NA")
+
+if(exists("js$date")){
+  date = js$date
+  return(date)
+	
 }
 else{
-return(date)
+return("NA")
 
 }
 }
@@ -237,3 +231,5 @@ some_txt = some_txt[some_txt != ""]
 names(some_txt) = NULL
 return(some_txt)
 }
+
+
