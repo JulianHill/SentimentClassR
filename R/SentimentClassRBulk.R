@@ -148,9 +148,9 @@ getDate <- function(url,token)
 js <- fromJSON(data, asText=TRUE);
  
 # get mood probability
-date = toString(js$date)
+date = js$date
 
-if(length(date)==1)
+if(length(date)<2)
 {
 	return("NA")
 }
