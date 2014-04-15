@@ -1,4 +1,4 @@
-NewsClass <- function(api_key,token_diff,token_shares url) {
+NewsClass <- function(api_key,token_diff,token_shares, url) {
 
 library(RCurl)
 library(RJSONIO)
@@ -54,7 +54,7 @@ tmp = getSentiment(text_clean[i], api_key)
  text_df$subject[i] = tmp$subject
  text_df$topic[i] = tmp$topic
 
- text_df$date[i] = toString(getDate(url,token))
+ text_df$date[i] = toString(getDate(url,token_diff))
  text_df$length[i] = sapply(gregexpr("\\W+", text_clean), length) + 1
  text_df$shares[i] = getShares(url,token_shares)
 
