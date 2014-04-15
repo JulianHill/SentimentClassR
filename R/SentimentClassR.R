@@ -1,4 +1,4 @@
-NewsClass <- function(api_key,token_diff,token_shares, url) {
+NewsClass <- function(api_key,token_diff,token_shares,url) {
 
 library(RCurl)
 library(RJSONIO)
@@ -50,7 +50,6 @@ tmp = getSentiment(text_clean[i], api_key)
 
  
  text_df$sentiment[i] = tmp$sentiment
- 
  text_df$subject[i] = tmp$subject
  text_df$topic[i] = tmp$topic
 
