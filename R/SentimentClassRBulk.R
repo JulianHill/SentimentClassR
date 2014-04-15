@@ -15,7 +15,7 @@ url <- toString(URLS[i,1])
 
 tmp <- NewsClass(api_key,token_diff,token_shares,url)
 
-
+df$text[i] = tmp$text
  df$sentiment[i] = tmp$sentiment
  df$subject[i] = tmp$subject
  df$topic[i] = tmp$topic
